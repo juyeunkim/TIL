@@ -1,4 +1,5 @@
 # EditableTable 코드 분석
+
 > https://previews.aspirity.com/easydev/tables/editable_table  ver 3.4.0
 >
 > ✅TODO : EditableTable 코드를 분석하여, Table의 row를 수정할 수 있도록
@@ -26,7 +27,7 @@ const EditableReactTable = ({reactTableData}) => {
     const [rows, setData] = useState(reactTableData.tableRowsData);
   	const [withSearchEngine, setWithSearchEngine] = useState(false);
     
-    // 해당 테이블의 row, col 좌표를 가지고 값을 변경한다
+    // 해당 테이블의 row, col 좌표를 가지고 값을 변경한다 -- 테이블 내용 수정 로직
     const updateEditableData = (rowIndex, columnId, value) => {
     	setData(old => old.map((item, index) => {
       		if (index === rowIndex) {
@@ -145,20 +146,142 @@ const ReactTableBase = ({
 const ReactTableConstructor = ({
     tableConfig, tableOptions, tableOptionalHook,
 }) => {
+  	const {
+    	isEditable,
+    	isResizable,
+    	isSortable,
+    	withPagination,
+    	withSearchEngine,
+    	manualPageSize,
+    	placeholder,
+  	} = tableConfig;
+    const {
+    	getTableProps,
+    	getTableBodyProps,
+    	headerGroups,
+    	footerGroups,
+    	state,
+    	rows,
+    	prepareRow,
+    	page,
+    	pageCount,
+    	pageOptions,
+    	gotoPage,
+    	previousPage,
+    	canPreviousPage,
+    	nextPage,
+    	canNextPage,
+    	setPageSize,
+    	setGlobalFilter,
+    	withDragAndDrop,
+    	updateDraggableData,
+    	updateEditableData,
+    	dataLength,
+    	state: { pageIndex, pageSize },
+  	} = useTable(
+    	tableOptions,
+    	useGlobalFilter,
+    	useSortBy,
+    	usePagination,
+    	useResizeColumns,
+    	useRowSelect,
+    	...tableOptionalHook,
+  	);
     return (
-        <ReactTableHeader />
-        <BodyReactTable
-            page={page}
-            getTableBodyProps={getTableBodyProps}
-            prepareRow={prepareRow}
-            updateDraggableData={updateDraggableData}
-            updateEditableData={updateEditableData}
-            isEditable={isEditable}
-            withDragAndDrop={withDragAndDrop}
-         />
+        <div className={withPagination ? 'table react-table' : 'table react-table table--not-pagination'}>
+        	<table
+                {...getTableProps()}
+          		className={isEditable ? 'react-table editable-table' : 'react-table resizable-table'}
+           	>
+        		<ReactTableHeader />
+        		<BodyReactTable
+            		page={page}
+            		getTableBodyProps={getTableBodyProps}
+            		prepareRow={prepareRow}
+            		updateDraggableData={updateDraggableData}
+            		updateEditableData={updateEditableData}
+            		isEditable={isEditable}
+            		withDragAndDrop={withDragAndDrop}
+         		/>
+            </table>
+        </div>
         
     );
 };
 ~~~
 
 > useTable - https://react-table.tanstack.com/docs/api/useTable 
+
+
+
+### ReactTableBody
+
+> src/shared/components/table/ReactTableBody.jsx
+
+~~~jsx
+const ReactTableDefaultBody = ({ page, getTableBodyProps, prepareRow }) => (
+  <tbody className="table table--bordered" {...getTableBodyProps()}>
+    {page.map((row) => {
+      prepareRow(row);
+      return (
+        <tr {...row.getRowProps()}>
+          {row.cells.map(cell => (
+            <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+          ))}
+        </tr>
+      );
+    })}
+  </tbody>
+);
+
+const ReactTableBody = ({
+  page, getTableBodyProps, prepareRow, withDragAndDrop, updateDraggableData, theme,
+}) => (
+  <Fragment>
+    {withDragAndDrop
+      ? (
+        <ReactTableDnDBody
+          page={page}
+          getTableBodyProps={getTableBodyProps}
+          prepareRow={prepareRow}
+          updateDraggableData={updateDraggableData}
+          theme={theme}
+        />
+      ) : (
+        <ReactTableDefaultBody
+          page={page}
+          getTableBodyProps={getTableBodyProps}
+          prepareRow={prepareRow}
+        />
+      )
+    }
+  </Fragment>
+);
+~~~
+
+
+
+
+
+
+
+
+
+# Editable Library
+
+https://github.com/jamesmart77/react-form-editables
+
+> 클래스 함수로만 작성 
+
+https://github.com/bfischer/react-inline-editing
+
+
+
+# Editable Code 작성
+
+https://blog.logrocket.com/the-complete-guide-to-building-inline-editable-ui-in-react/
+
+## Simple Editable Code
+
+> isEdit변수를 지정하여 true/false일때 화면 결과를 다르게 렌더링한다
+
