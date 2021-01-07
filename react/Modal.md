@@ -142,37 +142,50 @@ export default ModalInstance;
 
 ### 에러 1
 
+- 코드
+
+~~~jsx
+// parent
+const ExamplePage = () => {
+    const [result, setResult] = useState({}); // empty object
+    return(
+        <>
+        	<ModalTwo setResult={setResult}>
+        	{result}
+        </>
+    );
+};
+~~~
+
+~~~jsx
+// child
+const modalTwo = ({setResult}) => {
+    const text = {test:"test", number:1, bool: true};
+
+    return(
+        <>
+            <h1>모달내용</h1>
+            <button onClick={ () => setResult(text)}> 결과 전송 </button>
+        </>
+    );
+};
+~~~
+
 - 에러 내용
 
 ~~~
 Objects are not valid as a React child (found: object with keys {test, number, bool}). If you meant to render a collection of children, use an array instead.
 ~~~
 
-- 코드
+- 에러 원인
 
-~~~jsx
-// parent
-const ExamplePage = () => {
-    const [result, setResult] = useState([]); 
-};
+`parent` 에서 result로 렌더링 할 때 - Object 그대로 화면에 보여주려고해서 생긴 문제
+
+- 해결 방법
+
+~~~js
+JSON.stringfy(result)
 ~~~
 
-> {} 대신 [] 로 했는데 에러나서 array로 일단 수정
-
-~~~jsx
-// child
-const modalTwo = ({result, setResult}) => {
-    const text = {test:"test", number:1, bool: true};
-    // const text = "test";
-
-    return(
-        <>
-            <h1>모달내용</h1>
-            <button onClick={ () => setResult(result => [...result, {test:"test", number:1, bool: true}])}> 결과 전송 </button>
-        </>
-    );
-};
-~~~
-
-
+> Object -> json 으로 변환해서 화면에 출력
 
