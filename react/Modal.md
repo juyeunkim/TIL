@@ -80,8 +80,6 @@ $ctrl.open = function (size, parentSelector) {
 
 Modal 안에 props로 component를 넘긴다
 
-
-
 ~~~jsx
 // App.jsx
 import React, { useState } from 'react';
@@ -132,5 +130,49 @@ export default ModalInstance;
 
 
 
-### 비동기로 모달안의 결과값 받아오기
+
+
+## 비동기로 모달안의 결과값(object) 받아오기
+
+> 자식 컴포넌트 -> 부모 컴포넌트의 결과 가져오기
+>
+> 리액트는 단방향 데이터 바인딩으로 부모 -> 자식으로 props를 전달한다
+
+
+
+### 에러 1
+
+- 에러 내용
+
+~~~
+Objects are not valid as a React child (found: object with keys {test, number, bool}). If you meant to render a collection of children, use an array instead.
+~~~
+
+- 코드
+
+~~~jsx
+// parent
+const ExamplePage = () => {
+    const [result, setResult] = useState([]); 
+};
+~~~
+
+> {} 대신 [] 로 했는데 에러나서 array로 일단 수정
+
+~~~jsx
+// child
+const modalTwo = ({result, setResult}) => {
+    const text = {test:"test", number:1, bool: true};
+    // const text = "test";
+
+    return(
+        <>
+            <h1>모달내용</h1>
+            <button onClick={ () => setResult(result => [...result, {test:"test", number:1, bool: true}])}> 결과 전송 </button>
+        </>
+    );
+};
+~~~
+
+
 
