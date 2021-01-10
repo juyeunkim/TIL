@@ -189,3 +189,78 @@ JSON.stringfy(result)
 
 > Object -> json 으로 변환해서 화면에 출력
 
+
+
+### 에러2
+
+- 코드
+
+~~~jsx
+// parent
+const ExamplePage = () => {
+    const [result, setResult] = useState({}); // empty object
+    return(
+        <>
+        	<SelectModal modal={modal2} url={"/api/admins/groups"} title={"제목"} header={header} toggle={selectModalTest} setResult={setResult}/>
+        </>
+    );
+};
+~~~
+
+~~~jsx
+// child
+const SelectModalTable = ({
+    url,
+    header,
+    setResult
+}) => {
+     const selected = (data) => {
+        console.log('data select -', data);
+        setResult(data);
+    };
+    
+    return(
+        <Table hover>
+            <thead>
+                <tr>
+                    {header.map((item, id) => (
+                        <th key={id}>{item.stt}</th>
+                    ))}
+                    <th>선택</th>
+                </tr>
+            </thead>
+            <tbody>
+                {list.map((item, id) => (
+                    <tr key={id}>
+                        {header.map((h, hid) => (
+                            <td key={hid}> {item[h.key]}</td>
+                        ))}
+                        <td>
+                            <button onClick={selected(item)}>선택</button>
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+        </Table>
+    );
+};
+~~~
+
+> child 컴포넌트에서 선택 버튼을 클릭하면 해당 결과값을 parent에 전달하는 코드
+
+- 에러 내용
+
+~~~
+Warning: Cannot update a component (`ExamplePage`) while rendering a different component (`SelectModalTable`). To locate the bad setState() call inside `SelectModalTable`, follow the stack trace as described in https://fb.me/setstate-in-render
+~~~
+
+- 에러 원인
+
+child 컴포넌트에서 선택 버튼 클릭시  `seleted` 함수를 바로 호출해서 렌더링 될때마다 해당 함수가 호출되었던 문제
+
+- 해결 방법
+
+~~~jsx
+<button onClick={() => selected(item)}>선택</button>
+~~~
+
