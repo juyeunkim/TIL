@@ -210,7 +210,7 @@ onst Login = ({ onLogin }) => {
 
 ### useContext + useReducer
 
-![image-20200909183110059](C:\Users\juyeunkim\AppData\Roaming\Typora\typora-user-images\image-20200909183110059.png)
+![image-20200909183110059](./img/useContext+useReducer 예제.png)
 
 > useReducer를 통해 state의 상태를 변경하고,
 >
@@ -337,4 +337,33 @@ export default function App () {
    기존의 클래스의 라이프사이클과 state의 로직을 분리 -> 관리하기 편하다 (단위 테스트및 디버깅)
 
    다른 컴포넌트에서 쉽게 가져와서 쓸수 있음
+
+
+
+## 에러 유형
+
+### react-hooks 에러
+
+- 에러 내용
+
+~~~
+React Hook "useState" is called in function "utilTest" which is neither a React function component or a custom React Hook function
+~~~
+
+- 에러 원인
+
+컴포넌트를 만들 때, 맨앞을 `소문자` 로 시작해서 생긴 문제
+
+소문자로 시작하면 JSX에서 HTML 요소로 간주하기 때문에 생긴 에러
+
+- 해결 방법
+
+~~~jsx
+const UtilTest = () => {
+    return (
+        // 컴포넌트 내용
+    );
+
+}
+~~~
 
