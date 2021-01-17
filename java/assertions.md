@@ -6,9 +6,11 @@
 >
 > 버그가 발생한 시점에서 어디서 버그가 발생했는지를 알려준다
 
-### 예제
+### 예제1
 
 ~~~java
+import org.junit.jupiter.api.Assertions;
+
 @Test
     public void save(){
         Member member = new Member();
@@ -26,3 +28,21 @@
 > 다르면 ![스크린샷 2021-01-17 오후 11.21.19](assertions결과.png)
 >
 > 이와 같은 결과가 나온다 
+
+### 예제2
+
+~~~java
+import static org.assertj.core.api.Assertions.*;
+
+@Test
+    public void save(){
+        Member member = new Member();
+        member.setName("spring");
+
+        repository.save(member);
+
+        Member result = repository.findbyId(member.getId()).get();
+        assertThat(member).isEqualTo(result);
+   }
+~~~
+
