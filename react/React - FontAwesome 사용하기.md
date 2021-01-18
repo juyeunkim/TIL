@@ -26,3 +26,8 @@ const FontAwesomeTest = () => {
 }
 ~~~
 
+
+
+
+
+[예제 - codesandbox](https://codesandbox.io/s/react-font-awesome-b6vxt?from-embed=&file=/src/components/SizingIcons.js:184-186)
