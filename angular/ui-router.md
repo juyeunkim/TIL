@@ -12,13 +12,73 @@ npm install --save @uirouter/angularjs
 
 
 
-# ocLazyLoad
+### Add script tags
 
-> 초기에 모든 리소스를 로드하는 SPA의 문제점을 해결할 수 있는 방법
->
-> `ui-router`와 함께 사용됨
->
-> ▶리소스를 미리 준비해 놓는 것이 아닌 필요할 때 로딩
+~~~html
+<head>
+  <script src="lib/angular.js"></script>
+  <script src="lib/angular-ui-router.js"></script>
+  <script src="helloworld.js"></script>
+</head>
+~~~
+
+> 이때, `angular.js` 가 `angular-ui-router` 보다 위에있어야한다 
+
+
+
+### 예제
+
+- index.html
+
+~~~html
+<html>
+  <head>
+    <script src="lib/angular.js"></script>
+    <script src="lib/angular-ui-router.js"></script>
+    <script src="helloworld.js"></script>
+
+    <style>.active { color: red; font-weight: bold; }</style>
+  </head>
+
+  <body ng-app="helloworld">
+    <a ui-sref="hello" ui-sref-active="active">Hello</a>
+    <a ui-sref="about" ui-sref-active="active">About</a>
+
+    <ui-view></ui-view> <!-- 해당 부분에 url이 활성화된 template이 보여진다 -->
+  </body>
+</html>
+~~~
+
+- helloworld.js
+
+~~~js
+var myApp = angular.module('helloworld', ['ui.router']);
+// helloworld는 main module
+// ui.router는 helloworld에 속해있는 module
+
+myApp.config(function($stateProvider) { // module method 의존성 주입
+  var helloState = {
+    name: 'hello',
+    url: '/hello',
+    template: '<h3>hello world!</h3>'
+  }
+
+  var aboutState = {
+    name: 'about',
+    url: '/about',
+    template: '<h3>Its the UI-Router hello world app!</h3>'
+  }
+
+  $stateProvider.state(helloState);
+  $stateProvider.state(aboutState);
+});
+~~~
+
+
+
+## $stateProvider
+
+> url, template, controller를 정의
 
 
 
@@ -53,3 +113,6 @@ npm install --save @uirouter/angularjs
 
 
 
+
+
+[ui-router 공식 문서](https://ui-router.github.io/)
