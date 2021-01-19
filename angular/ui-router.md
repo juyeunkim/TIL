@@ -118,6 +118,27 @@ angular.module('hellosolarsystem').component('about', {
 
 
 
+### 예시 3
+
+> `parent-child` 관계로 작성
+
+~~~js
+var personState = { 
+  name: 'people.person', // people의 child
+  url: '/{personId}', 
+  component: 'person',
+  resolve: {
+    person: function(people, $stateParams) {
+      return people.find(function(person) { 
+        return person.id === $stateParams.personId;
+      });
+    }
+  }
+}
+~~~
+
+![Changes to Person state definition](https://ui-router.github.io/assets/tutorial/ss-to-galaxy-diff.png)
+
 ## 용어 정리
 
 ### $stateProvider
