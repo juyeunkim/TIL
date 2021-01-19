@@ -28,6 +28,8 @@ npm install --save @uirouter/angularjs
 
 ### 예제
 
+> `template` 사용
+
 - index.html
 
 ~~~html
@@ -76,17 +78,59 @@ myApp.config(function($stateProvider) { // module method 의존성 주입
 
 
 
-## $stateProvider
+### 예제2
+
+> `component` 사용
+
+- hellosolarsystem.js
+
+~~~js
+var myApp = angular.module('hellosolarsystem', ['ui.router']);
+
+myApp.config(function($stateProvider) {
+  var helloState = {
+    name: 'hello',
+    url: '/hello',
+    component: 'hello' // template 대신에 component
+  }
+
+  var aboutState = {
+    name: 'about',
+    url: '/about',
+    component: 'about'
+  }
+
+  states.forEach(function(state) {
+    $stateProvider.state(state);
+  });
+});
+~~~
+
+- about.js
+
+~~~js
+angular.module('hellosolarsystem').component('about', {
+  template:  '<h3>Its the UI-Router<br>Hello Solar System app!</h3>'
+})
+~~~
+
+> `.component` 으로 template을 정의한다
+
+
+
+## 용어 정리
+
+### $stateProvider
 
 > url, template, controller를 정의
 
 
 
-## $stateChangeStart
+### $stateChangeStart
 
 > URL의 상태가 변경되면 `$stateChangeStart` 이벤트 발생
 
-### 예제
+- 예제
 
 ~~~js
 // app.js
@@ -110,6 +154,65 @@ myApp.config(function($stateProvider) { // module method 의존성 주입
 
 })();
 ~~~
+
+
+
+### resolve
+
+> SPA 내에서 서버 API에서 데이터를 가져 올 때,  `promise`로 라우터가 활성화 되기 전에 필요한 데이터를 가져온다
+
+- 예제 - 데이터 리스트 가져오기
+
+~~~js
+var peopleState = {
+  name: 'people',
+  url: '/people',
+  component: 'people',
+  resolve: {
+    people: function(PeopleService) {
+      return PeopleService.getAllPeople();
+      // data를 가져 올 때, return promise로 위임한다
+    }
+  }
+},
+~~~
+
+~~~js
+angular.module('hellogalaxy').component('people', {
+  bindings: { people: '<' },
+
+  template: '<h3>Some people:</h3>' +
+            '<ul>' +
+            '  <li ng-repeat="person in $ctrl.people">' +
+            '    <a ui-sref="person({ personId: person.id })">' +
+            '      {{person.name}}' +
+            '    </a>' +
+            '  </li>' +
+            '</ul>'
+    // $ctrl.people 에 데이터 리스트가 들어있음
+})
+~~~
+
+> 데이터를 다 가져온 후, `people` 이라는 `name`에 바인딩해서 데이터 리스트를 보여준다
+
+
+
+### $transitions$
+
+- 예제 - 파라미터 설정
+
+~~~~js
+{
+  name: 'person',
+  url: '/people/{personId}',
+  component: 'person',
+  resolve: {
+    person: function(PeopleService, $transition$) {
+      return PeopleService.getPerson($transition$.params().personId);
+    }
+  }
+}
+~~~~
 
 
 
