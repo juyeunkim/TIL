@@ -15,10 +15,11 @@ npm install react-router-dom
 #### BrowserRotuer
 
 - BrowserRouter vs HashRouter
+
   - BrowserRouter : 히스토리 API
-  
+
     `<Link to="">`
-  
+
   - HashRouter : URL의 해시를 이용, 정적인 페이지에 적합
 
 #### Route
@@ -123,4 +124,30 @@ export default withRouter(Register);
 ### 제한적 경로 접근
 
 https://velog.io/@public_danuel/Restrict-Route
+
+
+
+
+
+### URL 변경 감지
+
+~~~jsx
+import { Route, Switch, useHistory } from 'react-router-dom';
+
+const Router = () => {
+    const history = useHistory();
+    
+    useEffect(() => {
+      // URL 이동 변경 감지
+      return history.listen((location) => {
+
+        console.log(`You changed the page to: ${location.pathname}`)
+        console.log(location) 
+     }) 
+
+    // eslint-disable-next-line
+  }, [history])
+    
+};
+~~~
 
