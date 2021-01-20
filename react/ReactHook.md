@@ -176,6 +176,19 @@ function Example(){
   - 다음 부수효과 함수가 호출되기 직전에 호출
   - 컴포넌트가 사라지기 직전에 (unmount) 마지막으로 호출
 
+#### componentDidMount, componentWillUnmount 를 Hook 으로 수정
+
+~~~jsx
+useEffect(() => {
+    window.addEventListener("beforeunload", alertUser); // componentDidMount
+    return () => {										// componentWillUnmount 
+      window.removeEventListener("beforeunload", alertUser);
+    };
+  }, []);
+~~~
+
+
+
 
 
 ## useReducer
