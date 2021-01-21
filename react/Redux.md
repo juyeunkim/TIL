@@ -1,8 +1,8 @@
-## Redux
+# Redux
 
 > React 의 상태관리 (store)
 
-### 특징
+## 특징
 
 - 컴포넌트 코드로부터 상태코드를 분리
 
@@ -43,7 +43,7 @@
 >
 > View는 이벤트를 받아서 화면을 갱신
 
-### Action
+## Action
 
 > 프로젝트의 상태에 변화를 일으키는것
 >
@@ -72,7 +72,7 @@
   const decrease = () =>({ type : DECREASE});
   ~~~
 
-### Reducer
+## Reducer
 
 > 변화를 일으키는 함수
 >
@@ -114,11 +114,7 @@ const reducer = createReducer (INITIAL_STATE, {
 
 
 
-
-
-
-
-### Store
+## Store
 
 > 프로젝트에 리덕스를 사용하기 위한 store 역할
 >
@@ -141,9 +137,9 @@ const reducer = createReducer (INITIAL_STATE, {
       prevState = state;
   })
   ~~~
+
   
-  
-  
+
 - createStore : 스토어 생성
 
   ~~~js
@@ -151,12 +147,12 @@ const reducer = createReducer (INITIAL_STATE, {
   import {createStore} from "redux"
   
   const store = createStore(reducer);
-// store에 reducer을 넣어서 호출 -> 스토어 생성
+  // store에 reducer을 넣어서 호출 -> 스토어 생성
   ~~~
-  
+
   
 
-### Redux Code Sytle
+## Redux Code Sytle
 
 1. 일반적인 구조
 
@@ -180,9 +176,9 @@ const reducer = createReducer (INITIAL_STATE, {
 
 
 
-##  React-Redux
+# React-Redux
 
-### Provider
+## Provider
 
 > 리액트 컴포넌트에서 스토어를 사용할수 있도록 제공
 >
@@ -200,7 +196,7 @@ function App() {
 
 
 
-### Container
+## Container
 
 > 리덕스 스토어와 연동된 컴포넌트
 
@@ -252,7 +248,9 @@ function App() {
 
 ==> connect 는 Old한 버전 
 
-### useSelector 
+
+
+## useSelector 
 
 > state를 가져온다
 >
@@ -266,13 +264,13 @@ function App() {
      import { useSelector } from "react-redux";
      
      const number = useSelector(state => state.counter.number);
-   const diff = useSelector(state => state.counter.diff);
+      const diff = useSelector(state => state.counter.diff);
      ~~~
 
   2. `equlityFn` 사용
-  
+
      - 객체
-     
+
      ~~~js
      import {shallowEqual} from 'react-redux'
      
@@ -285,18 +283,16 @@ function App() {
        );
      // 일치하는 state만 찾아서 사용 - 그 부분만 리렌더링
      ~~~
-     
+
      - 배열
-     
+
      ~~~js
      const [friends, freinds2] = useSelector(state => [state.friend.friends,state.friend.friends2], shallowEqual)
      ~~~
+
      
-     
 
-
-
-### useDispatch
+## useDispatch
 
 > actions를 가져온다
 
@@ -317,9 +313,82 @@ function TodosContainer() {
 }
 ~~~
 
+### 에러
+
+- 코드
+
+~~~jsx
+const App = () => {
+  const dispatch = useDispatch();
+    
+  useEffect(() => {
+
+    window.addEventListener('load', () => {
+      dispatch(refresh());
+    });
+  }, [])
 
 
-### reselect
+  return (
+    <Provider store={store}>
+      <!-- 컴포넌트 -->
+    </Provider>
+  );
+}
+
+export default App;
+
+~~~
+
+> `App` 컴포넌트에서 `useDispatch` 를 사용하려고 시도함
+
+- 에러 내용
+
+~~~
+useDispatch() Error: Could not find react-redux context value; please ensure the component is wrapped in a <Provider>
+~~~
+
+- 에러 원인
+
+`App` 컴포넌트에 `Provider` 가 미리 정의되어야하는데, `dispatch `가 먼저 사용되어서 발생했던 에러
+
+▶ `AppWrapper` 라는 컴포넌트를 만들어서 감싸 준다
+
+- 해결 방법
+
+~~~jsx
+const App = () => {
+ const dispatch = useDispatch();
+
+  useEffect(() => {
+    window.addEventListener('load', () => {
+      dispatch(refresh());
+    });
+  }, [])
+  
+  return(
+    <AuthProvider>
+        <!-- 컴포넌트 -->
+      </AuthProvider>
+  );
+
+};
+
+const AppWrapper = () => {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  );
+}
+
+export default AppWrapper;
+
+~~~
+
+> `index.js` 에서는 App 대신에 `AppWrapper `컴포넌트를 사용한다
+
+## reselect
 
 > filter를 적용하고 싶을때
 >
@@ -374,7 +443,7 @@ const ageList = useSelector(getAgeLimit);
 
 
 
-### redux-actions
+## redux-actions
 
 > 리덕스 액션들을 관리할 때 유용 - createAction / handleActions
 
