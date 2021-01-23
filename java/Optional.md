@@ -84,3 +84,37 @@ Optional 클래스는 간편하게 객체 생성을 할 수 있도록 3가지 �
 
 
 
+### ifPresent
+
+> `ifPresent(Consumer<? super T> consumer)`: 이 메소드는 특정 결과를 반환하는 대신에 Optional 객체가 감싸고 있는 값이 존재할 경우에만 실행될 로직을 함수형 인자로 넘길 수 있습니다.
+
+- 예제
+
+~~~java
+Optional<Member> result = memberRepository.findbyName(member.getName());
+        
+result.ifPresent(m -> {
+            throw new IllegalStateException("이미 존재하는 회원입니다");
+        });
+// if(member.getName() != null)
+~~~
+
+> result가 값이 있으면 동작
+>
+> Member 에 null 체크를 하지 않아도 된다
+
+
+
+### orElseGet
+
+> 값이 있으면 꺼내고 없으면 메소드를 실행해라
+
+- 예제
+
+~~~java
+Optional<Member> result = memberRepository.findbyName(member.getName());
+return member.orElseGet(Member::new);  
+~~~
+
+> member에 값이 없을 때만 new Member()가 실행됨
+
