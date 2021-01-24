@@ -14,3 +14,18 @@ command + shift + T
 
 command + option + V
 
+
+
+### Generate
+
+Command + N
+
+> Getter, Setter, Constructor 를 만들어준다
+
+
+
+### Import
+
+option + shift + Enter
+
+> 필요한 내용을 Import
