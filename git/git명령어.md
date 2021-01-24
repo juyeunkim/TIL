@@ -40,3 +40,11 @@ $ git reset HEAD~2 // 마지막 2개의 commit을 취소
 $ git reset --hard HEAD^
 ~~~
 
+
+
+### commit description 추가
+
+~~~shell
+git commit -m "내용" -m "설명"
+~~~
+
