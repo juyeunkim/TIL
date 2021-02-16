@@ -26,3 +26,26 @@ SELECT * FROM APP_STATE_CONFIG
 	</where>
 ~~~
 
+
+
+### 객체 List로 Insert 하기
+
+- Dao.java
+
+~~~java
+int insCustomTypeData(List<CustomTypeData> dataList);
+~~~
+
+- Dao.xml
+
+~~~xml
+<insert id="insCustomTypeData">
+		INSERT INTO CUSTOM_TYPE_DATA ( type_name, type_value, ref_custom_type)
+		VALUES 
+			<foreach collection="list" item="item" separator=",">
+				( #{item.typeName}, #{item.typeValue}, concat(#{groupName},'_', #{item.typeName}))
+			</foreach>
+		)
+	</insert>
+~~~
+
