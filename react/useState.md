@@ -1,5 +1,7 @@
 # useState
 
+> 비동기 - 즉시 반영이 되지않는다
+
 
 
 ## object push
@@ -39,3 +41,14 @@ setTheObject(prevState => ({ ...prevState, currentOrNewKey: newValue}));
    ~~~
 
    
+
+## array index Object변경
+
+~~~js
+let newItem = [...params];
+newItem[i] = {...newItem[i], [name]:value};
+setParam(newItem);
+~~~
+
+
+
