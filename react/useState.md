@@ -1,6 +1,8 @@
 # useState
 
-> 비동기 - 즉시 반영이 되지않는다
+- 비동기 - 즉시 반영이 되지않는다
+
+  [값 즉시 업데이트하는 방법](https://linguinecode.com/post/why-react-setstate-usestate-does-not-update-immediately)
 
 
 
@@ -51,4 +53,32 @@ setParam(newItem);
 ~~~
 
 
+
+### useState값 바로 업데이트 하기
+
+> `useState` 는 비동기라서 값을 바로 업데이트하지 않는다
+>
+> setXXX로 값을 넣었어도 console.log로 출력했을때 원하는 결과가 나오지 않음
+>
+> ▶ `useEffect` 를 사용한다
+
+- 예시
+
+> model ( `Object`) 저장된 내용을
+>
+> data 의 param에 string으로 저장하고 싶다
+
+~~~~jsx
+setModel({ ...model, [newItem[i].name]: newItem[i].value });
+~~~~
+
+~~~jsx
+useEffect(() => {
+        setData(data => ({ ...data, param: JSON.stringify(model) }));
+}, [model])
+~~~
+
+> setModel로 Object의 내용을 `Update` 해주면 useEffect 함수가 호출되고,
+>
+>  data.param에 바뀐 내용이 바로바로 업데이트 된다
 
