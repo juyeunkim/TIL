@@ -112,6 +112,18 @@ const reducer = createReducer (INITIAL_STATE, {
 // createReducer (초기값, handlerMap)
 ~~~
 
+### sub-reducer (reducer 리팩토링)
+
+> reducer 내에서 sub function 을 이용하여 코드를 간결하게 만들기
+
+[출처 - Redux 공식 문서](https://redux.js.org/recipes/structuring-reducers/refactoring-reducer-example)
+
+
+
+
+
+
+
 
 
 ## Store
@@ -449,14 +461,32 @@ const ageList = useSelector(getAgeLimit);
 
 - createAction
 
+  > `action`의 인자값을 넣어줘도 되고, 안넣어줘도 된다
+  >
+  > `reducer` 에서 `action.payload`를 통해서 값을 접근할 수 있음
+  >
+  > >   다른 사용자가 `action`을 사용할때 어떠한 인자값이 들어갈지 모르기 때문에 정의를 해주는게 필요하다
+
   ~~~js
   // BEFORE
   export const increase = (input) => ({ type: CHANGE_INPUT}, input)
   // AFTER
-  export const changeInput = createAction(CHANGE_INPUT, (input) => input);
+  export const increase = createAction(CHANGE_INPUT, (input) => input);
+  export const increase = createAction(CHANGE_INPUT);
+  ~~~
+
+  ~~~jsx
+  // react에서 action 호출시
+  increase({'input'});
   ~~~
 
 - handleActions
+
+  > - 기존 리듀서에서 사용되는 `switch`문의 단점 : 
+  >
+  > `case` 에서 `let`이나 `const`를 통해 변수를 선언하려고하면 중첩되고 에러가 발생
+  >
+  > 또한, case 마다 함수를 정의하는건 코드 읽기가 힘들어진다.
 
   ~~~js
   // BEFORE
