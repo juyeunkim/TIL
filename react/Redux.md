@@ -516,6 +516,33 @@ const ageList = useSelector(getAgeLimit);
 
 
 
+## Redux ToolKit
+
+- 리듀서 생성 API - `immer`  
+
+  ▶ 새로운 state를 리턴할 필요가 없고, 상태 값을 직접 변경하는 방식으로 코드 작성
+
+  ~~~js
+  const todoReducer = createReducer([], {
+      ["addTodo"]: (state, action) => {
+          state.push(action.payload);
+      }
+  })
+  ~~~
+
+- 셀렉터 생성 API - `reselect`
+  ▶ state 가 변경되지 않으면 다시 실행되지 않는다 ( 메모이제이션 지원 )
+
+- createSlice
+
+  > 액션, 리듀서를 한번에 만든다
+
+[참고](https://blog.rhostem.com/posts/2020-03-04-redux-toolkits)
+
+
+
+
+
 ## Redux 비동기처리
 
 ### Redux-thunk
