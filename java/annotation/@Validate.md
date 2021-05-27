@@ -100,5 +100,44 @@ public String submit(@ModelAttribute @Valid FormData formData, Errors errors) {
 
 
 
-[참고](https://www.baeldung.com/javax-validation)
+[참고 ](https://www.baeldung.com/javax-validation)
+
+[참고2](https://meetup.toast.com/posts/223)
+
+
+
+### JUnit 에서 사용하기
+
+~~~java
+public class ValidateTest {
+    private static Validator validator;
+    
+    @BeforeAll 
+	public static void init() {
+		// validator 세팅
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		validator = factory.getValidator();
+	}
+    
+    @Test
+    @DisplayName("validation test")
+    @Test
+   public void manufacturerIsNull() {
+      Car car = new Car( null, "DD-AB-123", 4 );
+
+      Set<ConstraintViolation<Car>> constraintViolations =
+      validator.validate( car );
+
+      assertEquals( 1, constraintViolations.size() );
+      assertEquals(
+         "may not be null",
+         constraintViolations.iterator().next().getMessage()
+      );
+   }
+}
+~~~
+
+> `Set<ConstraintViolation<Object Type>> constraintViolations = validator.validate(Object Name) `
+
+[Vaidation in JUnit](http://hibernate.org/validator/documentation/getting-started/)
 
