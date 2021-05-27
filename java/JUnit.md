@@ -6,17 +6,21 @@
 
 ### @SpringBootTest
 
-일반적인 테스트로 slicing을 전혀 사용하지 않기 때문에 전체 응용 프로그램 컨텍스트를 시작한다
+- 일반적인 테스트로 slicing을 전혀 사용하지 않기 때문에 전체 응용 프로그램 컨텍스트를 시작한다
 
-전체 응용 프로그램을 로드하여 모든 bean을 주입하기 때문에 속도가 느리다
+  실제 웹 서버와 연결
+
+- 전체 응용 프로그램을 로드하여 모든 bean을 주입하기 때문에 속도가 느리다
 
 ### @WebMvcTest 
 
-Controller layer를 테스트하고 모의 객체를 사용하기 때문에 나머지 필요한 bean을 직정 세팅해줘야한다
+- Controller layer를 테스트하고 모의 객체를 사용하기 때문에 나머지 필요한 bean을 직정 세팅해줘야한다
 
-가볍고 빠르게 테스트가 가능
+  HTTP 요청은 mock을 이용해 가짜로 이뤄지고 실제 연결은 생성되지 않는다
 
-web 레이어 관련 빈(@Controller, @ControllerAdvice, @JsonComponent, Converter, GenericConverter, Filter, WebMvcConfigurer, and HandlerMethodArgumentResolver)들만 등록되므로 Service는 등록되지 않는다 -> `@MockBean` 을 통해서 가짜로 만들어줘야한다
+- 가볍고 빠르게 테스트가 가능
+
+- web 레이어 관련 빈(@Controller, @ControllerAdvice, @JsonComponent, Converter, GenericConverter, Filter, WebMvcConfigurer, and HandlerMethodArgumentResolver)들만 등록되므로 Service는 등록되지 않는다 -> `@MockBean` 을 통해서 가짜로 만들어줘야한다
 
 
 
@@ -59,7 +63,7 @@ class MemberServiceTest {
 
 [JUnit5, 단위테스트 참고](https://wan-blog.tistory.com/71)
 
-
+[스프링부트 테스트](https://yangbox.tistory.com/36)
 
 ## @Mock vs @InjectMocks
 
@@ -113,5 +117,5 @@ class MemberServiceTest {
 
 
 
-
+[JUnit 5 정리](https://beomseok95.tistory.com/303)
 
