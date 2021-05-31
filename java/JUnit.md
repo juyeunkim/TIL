@@ -119,3 +119,58 @@ class MemberServiceTest {
 
 [JUnit 5 정리](https://beomseok95.tistory.com/303)
 
+
+
+
+
+## @Nested
+
+> 중첩된 구조로 테스트 가능
+
+### 예제
+
+~~~java
+@DisplayName("중첩 구조 테스트")
+public class NestedTest {
+    @Nested
+    public class Out{
+        
+        @BeforeEach
+        void init(){
+            // 
+        }
+        
+        @DisplayName("중첩 테스트 1")
+        @Test
+        void insideFuc (){
+            ///
+        }
+    }
+}
+~~~
+
+
+
+## @TestInstance
+
+> 테스트 인스턴스의 라이프 사이클을 설정할 때 사용
+
+- PER_METHOD
+
+  test 함수 당 인스턴스가 생성 (default)
+
+- PER_CLASS
+
+  test 클래스 당 인스턴스가 생성
+
+  - @BeforeAll, @AfterAll 어노테이션을 static method가 아닌 곳에서도 사용가능
+  - @Nested 테스트 클래스에서 @BeforeAll, @AfterAll 선언할 때 사용
+
+[@TestInstance](https://withhamit.tistory.com/300)
+
+
+
+## @TestMethodOrder
+
+> 테스트들의 실행 순서가 반드시 필요할때 사용
+
