@@ -3,7 +3,7 @@
 - 서버 응용 프로그램 테스트를 위해 설계된 HTTP 클라이언트
 - End-to-end HTTP테스트를 수행하는데 사용
 - Spring MVC 및 Spring WebFlux 애플리케이션을 테스트하는데 사용
-- spring 버전 5.3 부터 지원
+- ~~spring 버전 5.3 부터 지원~~
 
 
 
@@ -192,15 +192,25 @@ org.springframework.beans.factory.NoSuchBeanDefinitionException: No bean named '
 
 2. ApiTest에서 Controller로 설정
    org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'net.nmfun.funbox.controller.GameController$$EnhancerBySpringCGLIB$$b7967e1d': Unsatisfied dependency expressed through field 'request'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'javax.servlet.http.HttpServletRequest' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
-   Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'javax.servlet.http.HttpServletRequest' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
-   at org.springframework.beans.factory.support.DefaultListableBeanFactory.raiseNoMatchingBeanFound(DefaultListableBeanFactory.java:1717)
-   at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1273)
-   at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1227)
-   at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:657)
-   ... 93 more
+     Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'javax.servlet.http.HttpServletRequest' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+     at org.springframework.beans.factory.support.DefaultListableBeanFactory.raiseNoMatchingBeanFound(DefaultListableBeanFactory.java:1717)
+     at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1273)
+     at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1227)
+     at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:657)
+     ... 93 more
 
 3. Controller로 테스트
    https://howtodoinjava.com/spring-webflux/webfluxtest-with-webtestclient/ <-- 여기보고 작성
    java.lang.IllegalStateException: Failed to load ApplicationContext
    Caused by: org.springframework.beans.factory.support.BeanDefinitionOverrideException: Invalid bean definition with name 'requestDataValueProcessor' defined in class path resource [org/springframework/security/config/annotation/web/reactive/WebFluxSecurityConfiguration.class]: Cannot register bean definition [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.security.config.annotation.web.reactive.WebFluxSecurityConfiguration; factoryMethodName=requestDataValueProcessor; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/security/config/annotation/web/reactive/WebFluxSecurityConfiguration.class]] for bean 'requestDataValueProcessor': There is already [Root bean: class [null]; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; factoryBeanName=org.springframework.security.config.annotation.web.configuration.WebMvcSecurityConfiguration; factoryMethodName=requestDataValueProcessor; initMethodName=null; destroyMethodName=(inferred); defined in class path resource [org/springframework/security/config/annotation/web/configuration/WebMvcSecurityConfiguration.class]] bound.
+
+
+
+
+
+## Handler
+
+[Spring webflix hander test](https://coding-start.tistory.com/325)
+
+[WebFlux Support - Testing](https://docs.spring.io/spring-security/site/docs/5.0.7.RELEASE/reference/html/test-webflux.html)
 
