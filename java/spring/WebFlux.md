@@ -2,7 +2,7 @@
 
 
 
-[https://godekdls.github.io/Reactive%20Spring/springwebflux/](https://godekdls.github.io/Reactive Spring/springwebflux/)
+[springwebflux](https://godekdls.github.io/Reactive Spring/springwebflux)
 
 [스프링 리액티브]([https://kouzie.github.io/spring/Spring-Boot-%EC%8A%A4%ED%94%84%EB%A7%81-%EB%A6%AC%EC%95%A1%ED%8B%B0%EB%B8%8C-%EA%B0%9C%EC%9A%94/#webflux](https://kouzie.github.io/spring/Spring-Boot-스프링-리액티브-개요/#webflux))
 
@@ -15,6 +15,66 @@
 스프링 부트에서 공통 에러를 처리하는 것은 MVC와 조금 다름
 
 
+
+### 에러 처리 방법
+
+- `onErrorReturn`
+
+에러가 발생할 때 에러 대신에 특정 값을 발생하고 싶을때 사용
+
+~~~java
+Flux<Integer> seq = Flux.range(1, 10)
+        .map(x -> {
+            if (x == 5) throw new RuntimeException("exception");
+            else return x;
+        })
+        .onErrorReturn(-1);
+
+seq.subscribe(System.out::println);
+~~~
+
+~~~
+1
+2
+3
+4
+-1
+~~~
+
+> 에러 대신에 -1 값이 리턴
+
+
+
+- `onErrorResume`
+
+에러가 발생하면 다른 시퀀스나 에러로 대체할 수 있다.
+
+~~~java
+Random random = new Random();
+Flux<Integer> seq = Flux.range(1, 10)
+        .map(x -> {
+            int rand = random.nextInt(8);
+            if (rand == 0) throw new IllegalArgumentException("illarg");
+            if (rand == 1) throw new IllegalStateException("illstate");
+            if (rand == 2) throw new RuntimeException("exception");
+            return x;
+        })
+        .onErrorResume(error -> {
+            if (error instanceof IllegalArgumentException) {
+                return Flux.just(21, 22);
+            }
+            if (error instanceof IllegalStateException) {
+                return Flux.just(31, 32);
+            }
+            return Flux.error(error);
+        });
+
+seq.subscribe(System.out::println);
+~~~
+
+
+
+### global Exception
 
 - `DefaultErrorAttribute` 
 
@@ -113,4 +173,14 @@
 [webflux - Global Exception : **ResponseStatusException** 사용 ](https://devmingsa.tistory.com/80)
 
 [Spring-webflux에서 Handler](https://supawer0728.github.io/2019/04/04/spring-error-handling/)
+
+[Spring WebFlux - 공식 문서](https://docs.spring.io/spring-framework/docs/5.1.6.RELEASE/spring-framework-reference/web-reactive.html#webflux-exception-handler)
+
+[Exception handling - Spring WebFlux](https://medium.com/@akhil.bojedla/exception-handling-spring-webflux-b11647d8608)
+
+
+
+
+
+### 
 
