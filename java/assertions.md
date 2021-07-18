@@ -72,3 +72,14 @@ memberRepository.findbyName(member.getName())
 ~~~
 
 > join 함수를 실행했을때 예외가 같은지 확인 - 같으면 테스트 통과 / 다르면 실패
+
+
+
+
+
+## isSameAs ve isEqualTo
+
+same : 자바의 == 비교
+
+equal : equlas 메소드 비교
+
