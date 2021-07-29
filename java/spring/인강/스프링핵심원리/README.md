@@ -24,6 +24,7 @@
 ### 싱글톤 컨테이너
 
 - [싱글톤 컨테이너](싱글톤컨테이너.md)
+- [@Configuration](@Configuration.md)
 
 ### 컴포넌트 스캔
 
