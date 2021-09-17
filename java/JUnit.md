@@ -200,3 +200,42 @@ ServerException exception = assertThrows(ServerException.class, () -> {
 
 [예외처리 테스트, assertThrows](https://sas-study.tistory.com/317)
 
+
+
+## Transactional Test
+
+> 테스트 수행후 롤백
+
+~~~java
+@Transactional
+@Rollback
+public class TransactionalTest {
+    /////
+}
+~~~
+
+### 주의 사항
+
+- `@BeforeAll` 을 사용하면 트랜잭션이 안먹는다
+
+- 이유는 `@Transactional` 이 정적 메소드가 아닌  `Spring Bean` 의 인스턴스 메소드에서만 작동한다
+- `@BeforeEach` 는 인스턴스 메소드
+  - 모든 @Test에 대해 실행
+- `@BeforeAll` 은 정적 메소드
+  - 모든 @Test에 대해 시작시 한번만 실행
+
+- Test 시나리오
+  - @BeforeAll
+  - @Test
+    - transaction
+    - @Before
+    - @Test
+    - @After
+    - rollback transaction
+
+▶ 트랜잭션의 범위를 벗어나서 @BeforeAll에서는 롤백이 되지 않는다
+
+
+
+[@BeforeAll and @Transaction are not working](https://stackoverflow.com/questions/58657587/beforeall-and-transaction-are-not-working-changes-on-db-side-are-not-rollbac)
+
