@@ -174,3 +174,29 @@ public class NestedTest {
 
 > 테스트들의 실행 순서가 반드시 필요할때 사용
 
+
+
+
+
+## Exception Test
+
+~~~java
+ServerException exception = assertThrows(ServerException.class, () -> {
+				inquiryService.getUserInquiry(gameId, inquiryType, itemsPerPage, currentPage, notValidUser);
+			});
+			
+			assertEquals(ServerError.ERR_AUTH_CANNOT_FIND_SESSION.toString(), exception.getKey());
+~~~
+
+- `assertThrows(Class<> classType, Executable executable)`
+  - 인자값
+    1. 예외 클래스 타입
+    2. 실행할 함수
+       executable을 실행하여 예외가 발생할 경우 classType과 발생될 Exception이 같은 타입인지 체크
+
+
+
+
+
+[예외처리 테스트, assertThrows](https://sas-study.tistory.com/317)
+
