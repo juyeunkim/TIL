@@ -114,17 +114,18 @@ public Class ObjectBean {
 
 >  `association` `collection` 을 사용해서 VO를 매핑할때
 >
-> PK-FK로 묶여있어 id값이 같으면 하위 객체의 값이 비어있음에도 있는거처럼 매핑되는 경우가 있다.
+>  PK-FK로 묶여있어 id값이 같으면 하위 객체의 값이 비어있음에도 있는거처럼 매핑되는 경우가 있다.
 >
-> 이럴때 어떻게 처리해야하는지
+>  이럴때 어떻게 처리해야하는지
 
 
 
--  `association` `collection` 안에 id와 밖의 id가 같다면
+- `association` `collection` 안에 id와 밖의 id가 같다면
 
-   `association` `collection`안에 정의된 id 를 삭제한다
+  `association` `collection`안에 정의된 id 를 삭제한다
 
-
+- 컬럼명이름을 다르게 줘서 다른 컬럼으로 인식하도록
+  VO 에 다른 이름으로 컬럼을 추가하고, Map에 매핑한다
 
 
 
@@ -135,4 +136,6 @@ public Class ObjectBean {
 [Mybatis - 검색 결과를 임의의 Java Object에 매핑](https://araikuma.tistory.com/476)
 
 [Mabatis ResultMap이란? ](https://webdevtechblog.com/mybatis-resultmap%EC%9D%B4%EB%9E%80-854a94df1f78)
+
+
 
