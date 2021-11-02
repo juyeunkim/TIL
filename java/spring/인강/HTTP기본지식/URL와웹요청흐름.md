@@ -53,5 +53,5 @@ https://www.google.com:443/search?q=hello&hl=ko
 
 ### HTTP 메시지 전송
 
-![스크린샷 2021-10-25 오후 11.48.56](img/HTTP메시지전송.png)
+![스크린샷 2021-10-25 오후 11.48.56](img/HTTPMessage.png)
 
