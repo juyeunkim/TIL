@@ -16,7 +16,12 @@
 
 ### HTTP 메서드
 
+- [HTTP 메서드](HTTP메서드.md)
+
 ### HTTP 메서드 활용
+
+- [클라이언트에서 서버로 데이터 전송](클라이언트서버.md)
+- [HTTP API 설계 예시](HTTPAPI.md)
 
 ### HTTP 상태 코드
 
