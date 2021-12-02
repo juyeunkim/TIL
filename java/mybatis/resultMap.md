@@ -127,6 +127,74 @@ public Class ObjectBean {
 - 컬럼명이름을 다르게 줘서 다른 컬럼으로 인식하도록
   VO 에 다른 이름으로 컬럼을 추가하고, Map에 매핑한다
 
+- `columnPrefix` 사용
+
+  -  VO의 이름을 변경하지않아도되서 더 편하다
+
+
+
+### columnPrefix
+
+- resultMap으로 쿼리를 불러올때 컬럼명이 중복되는 경우가 있는데,  접두어를 추가해서 다른 컬럼명이라는것을 구분
+
+- 쿼리문에서 as 로 접두어도 추가하여야한다
+
+- depth가 깊어지면 상위 prefix와 자신의 prefix도 추가하여야한다
+
+  - ~~~xml
+    <resultMap id="testMap" type="com.test.Tester">
+    <id column="no" property="no"/>
+    <result column="col" property="col" />
+    <association property="tester" resultMap="tester1" columnPrefix="t1_"/>
+    </resultMap>
+    
+    <resultMap id="tester1" type="com.test.Tester">
+    <id column="no" property="no"/>
+    <result column="col" property="col" />
+    <association property="tester" resultMap="tester2" columnPrefix="t2_"/>
+    </resultMap>
+    
+    <resultMap id="tester2" type="com.test.Tester">
+    <id column="no" property="no"/>
+    <result column="col" property="col" />
+    </resultMap>
+    
+    ~~~
+
+  - ~~~mysql
+    SELECT
+        t.no,
+        t.col,
+        t1.no as t1_no
+        t1.col as t1_col
+        t2.no as t1_t2_no
+        t2.col as t1_t2_col
+    FROM tester t
+    left join tester t1 on t.no = t1.no
+    left join tester t2 on t.no = t2.no
+    ~~~
+
+~~~xml
+ <resultMap type="sample.mybatis.Foo" id="fooResultMap">
+    <id property="id" column="id" />
+    <!-- columnPrefix에서 공용하는 접두어를 지정한다. -->
+    <association property="bar" columnPrefix="bar_" resultMap="barResultMap" />
+  </resultMap>
+
+<select id="selectFoo" resultMap="fooResultMap">
+    select foo.id
+          ,bar.id bar_id -- "bar_"를 접두어로 지정
+      from foo_table foo
+          ,bar_table bar
+     where bar.id = foo.bar_id
+  order by foo.id asc
+  </select>
+~~~
+
+
+
+[Mybatis, association columnPrefix 중첩 사용시 주의 사항](https://androphil.tistory.com/733?category=423961)
+
 
 
 
