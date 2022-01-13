@@ -19,9 +19,59 @@ ex) Sptring Security, CORS Filter
 ### 설정 방법
 
 1. `web.xml` 등록 방식
+
 2. Java Config 등록 방식 -> FilterRegistration Bean을 정의하여 추가할 Filter를 정의
+
 3. Java Config 등록 방식  -> AbstractAnnotationConfigDispatcherServletInitializer에서 getServletFilter에 추가
-4. @WebFilter Annotation 등록 방식
+
+4. `@WebFilter` Annotation 등록 방식
+
+   - `@Component`, `@WebFilter` , `@Order` 사용으로 필터 등록
+
+   - ~~~java
+     package com.example.springstudy.filter;
+     
+     import org.springframework.core.annotation.Order;
+     import org.springframework.stereotype.Component;
+     
+     import javax.servlet.*;
+     import javax.servlet.annotation.WebFilter;
+     import java.io.IOException;
+     
+     @Component
+     @WebFilter(
+             description = "1번째 필터",
+             urlPatterns = "/*",
+             filterName = "Test-Filter1"
+     )
+     @Order(2)
+     public class TestFilter implements Filter {
+         @Override
+         public void init(FilterConfig filterConfig) throws ServletException {
+     
+         }
+     
+         @Override
+         public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+             System.out.println("start testFilter1");
+             filterChain.doFilter(servletRequest, servletResponse);
+             System.out.println("finish testFilter1");
+         }
+     
+         @Override
+         public void destroy() {
+     
+         }
+     }
+     ~~~
+
+   - 다른 설정 파일 없이 Filter Class 파일 하나만 가지고 Filter 설정 가능
+   - `@Component`
+     - Component-scan시 Spring Bean으로 등록
+   - `@WebFilter`
+     - Filter 등록에 필요한 interface를 제공
+   - `@Order`
+     - Filter chain에 대한 순서를 지정
 
 
 
