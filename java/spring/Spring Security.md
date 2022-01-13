@@ -1,12 +1,33 @@
 # SpringSecurity
 
+보통 웹 시스템 구성시에는 세션에 인증정보는 직접 저장하고 그 정보를 가지고 권한을 확인하는 형태를 취하고 있다
+
+시큐리티 같은 경우 기본적으로 세션을 사용하고 있지만 `SecurityContext` 객체를 통해서 전달하는 간접적으로 인증 정보를 전달한다.
 
 
-[@PreAuthorize @Secured 사용법](https://copycoding.tistory.com/278)
 
-[초보자가 이해하는 SpringSecurity]([https://postitforhooney.tistory.com/entry/SpringSecurity-%EC%B4%88%EB%B3%B4%EC%9E%90%EA%B0%80-%EC%9D%B4%ED%95%B4%ED%95%98%EB%8A%94-Spring-Security-%ED%8D%BC%EC%98%B4](https://postitforhooney.tistory.com/entry/SpringSecurity-초보자가-이해하는-Spring-Security-퍼옴))
+## 구조
 
-[[Spring Boot] SpringSecurity 적용하기](https://bamdule.tistory.com/53)
+### 인증 architecture
+
+![img](https://t1.daumcdn.net/cfile/tistory/99A7223C5B6B29F003)
+
+> spring security 는 세션-쿠키 방식으로 인증
+
+
+
+1. 유저가 로그인을 시도 (http request)
+2. AuthenticationFilter 에서부터 user DB까지 타고 들어감
+3. DB에 있는 유저라면 UserDetails로 꺼내서 유저의 session 생성
+4. spring security의 인메모리 세션저장소인 `SecurityContextHolder`에 저장
+5. 유저에게 session ID와 함께 응답을 내려줌
+6. 이후 요청에서는 요청쿠키에서 JSESSIONID 를 까서 검증 후 유효하면 Authentication을 쥐어준다
+
+
+
+[spring security 파헤치기](https://sjh836.tistory.com/165)
+
+[사용자 인증](https://sungminhong.github.io/spring/security/)
 
 
 
@@ -122,6 +143,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 ## @EnableWebSecurity
 
 > for Spring Security
+>
+> 스프링 MVC 웹 보안을 활성화
 
 ~~~java
 @Configuration
@@ -130,6 +153,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   ------
 }
 ~~~
+
+- `WebSecurityConfigurer`를 구현하거나
+- 컨텍스트의 `WebSecurityConfigurerAdapter` 를 확장한 빈으로 설정 되어있어야한다
+  - 확장하여 캘래스를 설정하는 것이 가장 편하고 자주 쓰이는 방법
+
+
+
+### WebSecurityConfigurerAdapter
+
+- `configure()` 메서도를 오버라이딩하고 동작을 설정하는것으로 웹 보안을 설정할 수 있다
+
+~~~java
+public abstract class WebSecurityConfigurerAdapter implements
+		WebSecurityConfigurer<WebSecurity>{
+    public void configure(WebSecurity web) throws Exception {...}
+    
+    protected void configure(HttpSecurity http) throws Exception {...}
+    
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {...}
+}
+~~~
+
+- WebSecurity
+  - 스프링 시큐리티의 필터 연결을 설정하기 위한 오버라이딩
+- HttpSecurity
+  - 인터셉터로 요청을 안전하게 보호하는 방법을 설정하기 위한 오버라이딩
+- AuthenticationManagerBuilder
+  - 사용자 세부 서비를 설정하기 위한 오버라이딩
 
 
 
@@ -186,7 +237,7 @@ public class ClientMethodSecurity extends GlobalMethodSecurityConfiguration {
 > ~~~java
 > public class ClientPermissionExpression implements PermissionEvaluator {
 > 	// hasPermission() 을 PermissionEvaluator 에 위임한다
->     
+> 
 >     @Override
 >     public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
 >         return false;
@@ -307,4 +358,54 @@ protected static class ResourceServerConfiguration
 
 
 [Spring Security 공식 문서](https://docs.spring.io/spring-boot/docs/1.4.x/reference/html/boot-features-security.html)
+
+
+
+
+
+[@PreAuthorize @Secured 사용법](https://copycoding.tistory.com/278)
+
+[초보자가 이해하는 SpringSecurity]([https://postitforhooney.tistory.com/entry/SpringSecurity-%EC%B4%88%EB%B3%B4%EC%9E%90%EA%B0%80-%EC%9D%B4%ED%95%B4%ED%95%98%EB%8A%94-Spring-Security-%ED%8D%BC%EC%98%B4](https://postitforhooney.tistory.com/entry/SpringSecurity-초보자가-이해하는-Spring-Security-퍼옴))
+
+[[Spring Boot] SpringSecurity 적용하기](https://bamdule.tistory.com/53)
+
+
+
+
+
+## DelegatingFilterProxy & FilterChainProxy
+
+![img](https://blog.kakaocdn.net/dn/c4Ruyp/btqIBZqOTEb/Q7KNDDJk5rKakxgbAXoRE1/img.png)
+
+- web.xml
+
+~~~xml
+<filter-mapping>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<url-pattern>/*</url-pattern>
+</filter-mapping>
+<filter>
+	<filter-name>springSecurityFilterChain</filter-name>
+	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+	<async-supported>true</async-supported>
+	<init-param>
+		<param-name>contextAttribute</param-name>
+		<param-value>org.springframework.web.servlet.FrameworkServlet.CONTEXT.appServlet</param-value>
+	</init-param>
+</filter>
+~~~
+
+> DelegatingFilterProxy : 모든 요청은 프록시 필터를 거친다. 스프링 시큐리티는 이를 통해 인증, 인가를 수행
+
+
+
+### DelegatingFilterProxy
+
+서블릿 컨테이너와 스프링 컨테이너 사이의 링크를 제공하는 ServletFilter 이다
+
+특정한 이름을 가진 스프링 빈을 찾아 그 빈에게 요청을 위임한다.
+
+
+
+[[스프링 시큐리티] DelegatingFilterProxy & FilterChainProxy](https://uchupura.tistory.com/24)
 
