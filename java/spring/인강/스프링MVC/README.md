@@ -12,6 +12,9 @@
 
 ### 서블릿
 
+- [HttpServletRequest](HttpServletRequest.md) 
+- [HTTP 요청 데이터](HTTP요청데이터.md)
+
 ### 서블릿, JSP, MVC 패턴
 
 ### MVC 프레임워크 만들기
