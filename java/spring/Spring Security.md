@@ -409,3 +409,32 @@ protected static class ResourceServerConfiguration
 
 [[스프링 시큐리티] DelegatingFilterProxy & FilterChainProxy](https://uchupura.tistory.com/24)
 
+
+
+
+
+
+
+## 익명 사용자 인증처리 필터
+
+### AnonymousAuthenticationFilter
+
+- 익명 사용자 인증처리 필터
+
+- 익명 사용자와 인증 사용자를 구분해서 처리하기 위한 용도로 사용되는 필터
+
+  - `Security Context` 안에 인증객체를 저장 (`ROLE_ANONYMOUS`)
+
+- `isAnonymous()` ` isAuthenticated()` 로 구분
+
+- 인증 객체를 세션에 저장하지 않는다
+
+  >  스프링 시큐리트는 세션에 유저 정보를 저장한다.
+
+  
+
+[[Spring Security] 02. 익명 사용자 인증 처리 필터 : AnonymousAuthenticationFilter](https://coder-in-war.tistory.com/entry/Spring-Security-02-익명-사용자-인증처리-필터-AnonymousAuthenticationFilter)
+
+
+
+

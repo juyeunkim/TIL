@@ -1,8 +1,31 @@
 # @SessionAttributes
 
-- Model의 정보를 `HttpSession` 에 저장
+- `Model`의 정보를 `HttpSession` 에 저장
 
 - SessionAttributes 어노테이션에 정의된 Key와 동일한 key로 Model에 값을 Set해주는 행위가 있으면 자동으로 Session에 저장
+
+- @SessionAttributes 선언된 클래스 내에서 세션 스코프가 설정
+
+  - ~~~~java
+    @SessionAttributes(value = "contentId")
+    public class AController {
+        @RequestMapping(value = "/test", method = RequestMethod.GET)
+        public String test (Model model){
+            List<Long> boardSession = (List<Long>) model.getAttribute("contentId");
+            // 세션에 저장된 contentId 를 가져옴
+        }
+    }
+    ~~~~
+
+    ~~~java
+    public class BController {
+        @RequestMapping(value = "/test2", method = RequestMethod.GET)
+        public String test (Model model){
+            List<Long> boardSession = (List<Long>) model.getAttribute("contentId");
+            // null
+        }
+    }
+    ~~~
 
 - `@ModelAttribute` 는 세션에 있는 데이터도 바인딩한다
 
@@ -32,7 +55,7 @@
     }
     ~~~
 
-  - 
+- 
 
 ### 기존 예제 (HttpSession)
 
